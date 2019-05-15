@@ -10,6 +10,8 @@
     <el-button @click="handleClickGet">get</el-button>
     <hr />
     {{ asd | toDecimal }}
+    <hr />
+    <el-button @click="handleClickMe">click me</el-button>
   </el-card>
 </template>
 
@@ -35,6 +37,9 @@ export default {
     handleClickGet() {
       console.log(this.library.getSessionStorage("user"));
       console.log(this.library.getLocalStorage("user"));
+    },
+    handleClickMe() {
+      alert(1)
     }
   }
 };
