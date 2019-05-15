@@ -39,7 +39,7 @@ export default {
       console.log(this.library.getLocalStorage("user"));
     },
     handleClickMe() {
-      alert(1)
+      alert(1);
     }
   }
 };
