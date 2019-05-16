@@ -27,6 +27,7 @@ a {
     right: 0;
     top: 70px;
     bottom: 0;
+    overflow: auto;
     padding-bottom: 30px;
     -webkit-transition: left .3s ease-in-out;
     transition: left .3s ease-in-out;
@@ -35,6 +36,7 @@ a {
 
 .content {
     width: auto;
+    min-width: 950px;
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
@@ -88,6 +90,6 @@ a {
 }
 
 .el-card {
-    min-width: 950px;
     height: 100%;
+    margin-top: 10px;
 }

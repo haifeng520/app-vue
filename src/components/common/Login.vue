@@ -82,7 +82,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          sessionStorage.setItem("token", "123");
+          this.library.setSessionStorage("token", "123");
           this.$message.success("登录成功！");
           this.$router.push("/welcome");
         } else {

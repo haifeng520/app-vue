@@ -19,7 +19,7 @@ MyPlugin.install = function(Vue) {
     //dev 开发环境
     axios.defaults.baseURL = "";
   }
-  // axios.defaults.timeout = 2500;
+  axios.defaults.timeout = 2500;
   // 添加请求拦截器
   let lod = null;
   axios.interceptors.request.use(

@@ -1,17 +1,44 @@
 <template>
   <el-card>
-    <div style="font-weight:700;">
-      你努力，不一定成功。但你不努力，一定很轻松
-    </div>
-    <input type="text" v-model="asd" />
-    <hr />
-    <el-button @click="handleClick">set</el-button>
-    <hr />
-    <el-button @click="handleClickGet">get</el-button>
-    <hr />
-    {{ asd | toDecimal }}
-    <hr />
-    <el-button @click="handleClickMe">click me</el-button>
+    <el-button @click="handleClick">click me</el-button>
+    <el-table
+      :data="tableData"
+      :stripe="true"
+      border
+      style="width: 100%">
+      <el-table-column fixed type="index" width="50"> </el-table-column>
+      <el-table-column fixed type="selection" width="50"> </el-table-column>
+      <el-table-column
+        prop="date"
+        label="日期"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="地址">
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="1"
+      :page-sizes="[2, 4, 6]"
+      :page-size="2"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
+    <!-- ------------------- -->
+    <br>
+    <el-button type="danger" @click="handleClick1">click me</el-button>
+    <el-input v-model="obj.a" placeholder="请输入内容"></el-input><br>
+    {{ obj.a }}
+    <el-input v-model="obj.b" placeholder="请输入内容"></el-input><br>
+    {{ obj.b }}
   </el-card>
 </template>
 
@@ -19,27 +46,31 @@
 export default {
   data() {
     return {
-      asd: "2"
+      tableData: [],
+      total: 10,
+      obj: {
+        a: '1'
+      }
     };
   },
   methods: {
-    handleClick() {
-      // console.log(this.asd.trim());
-      /* let obj = {
-        name: 'zs',
-        age: 18,
-        aggent: '男'
-      } */
-      let obj = "abc";
-      this.library.setSessionStorage("user", obj);
-      this.library.setLocalStorage("user", obj);
+    async handleClick() {
+      const res = await this.$axios.get('http://localhost:3000/list?_page=1&_limit=2');
+      const status = res.status;
+      if(status === 200) {
+        this.tableData = res.data;
+        console.log(res);
+      }
     },
-    handleClickGet() {
-      console.log(this.library.getSessionStorage("user"));
-      console.log(this.library.getLocalStorage("user"));
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
     },
-    handleClickMe() {
-      alert(1);
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
+    handleClick1() {
+      this.obj.b = '2';
+      // this.$set(this.obj,'b','2');
     }
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="always" style="overflow: auto;">
+  <el-card style="overflow: auto;">
     <el-row>
       <el-button
         @click="handleAddClass"
@@ -15,8 +15,7 @@
           :model="formData"
           label-width="100px"
           class="demo-ruleForm"
-          ref="formData"
-        >
+          ref="formData">
           <el-row :gutter="20">
             <el-col :span="8">
               <el-form-item label="课程" prop="courseId">
@@ -113,67 +112,12 @@
             <el-col :span="8">
               <el-row>
                 <el-form-item label="校区：">
-                  <el-col :span="5">
-                    <el-form-item prop="provinceId">
-                      <el-select
-                        v-model="formData.provinceId"
-                        placeholder="请选择"
-                      >
-                        <el-option
-                          v-for="item in options_1"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value"
-                        >
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <el-col class="line" :span="1">-</el-col>
-                  <el-col :span="5">
-                    <el-form-item prop="cityId">
-                      <el-select v-model="formData.cityId" placeholder="请选择">
-                        <el-option
-                          v-for="item in options_2"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value"
-                        >
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <el-col class="line" :span="1">-</el-col>
-                  <el-col :span="5">
-                    <el-form-item prop="districtId">
-                      <el-select
-                        v-model="formData.districtId"
-                        placeholder="请选择"
-                      >
-                        <el-option
-                          v-for="item in options_3"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value"
-                        >
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <el-col class="line" :span="1">-</el-col>
-                  <el-col :span="5">
-                    <el-form-item prop="camId">
-                      <el-select v-model="formData.camId" placeholder="请选择">
-                        <el-option
-                          v-for="item in options_4"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value"
-                        >
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
+                  <el-cascader
+                    :options="options"
+                    v-model="formData.selectedOptions"
+                    @change="handleChange">
+                  </el-cascader>
+                  {{ formData.selectedOptions }}
                 </el-form-item>
               </el-row>
             </el-col>
@@ -390,6 +334,8 @@
 </template>
 
 <script>
+import options from '../../commonjs/address';
+
 export default {
   data() {
     return {
@@ -407,10 +353,7 @@ export default {
         isRecommend: "",
         isPromotion: "",
         showTeacherName: "",
-        provinceId: "",
-        cityId: "",
-        districtId: "",
-        camId: ""
+        selectedOptions: []
       },
       tableData: [
         {
@@ -437,10 +380,7 @@ export default {
           sections: "2"
         }
       ],
-      options_1: [{ value: "选项1", label: "黄金糕" }],
-      options_2: [{ value: "选项1", label: "黄金糕" }],
-      options_3: [{ value: "选项1", label: "黄金糕" }],
-      options_4: [{ value: "选项1", label: "黄金糕" }],
+      options: [],
       // 编辑信息对话框
       editDialogVisible: false,
       // 对话框表单数据
@@ -509,7 +449,13 @@ export default {
     },
     ccc(obj) {
       console.log(obj);
+    },
+    handleChange(value) {
+      console.log(value);
     }
+  },
+  created() {
+    this.options = options;
   }
 };
 </script>

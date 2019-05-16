@@ -127,11 +127,10 @@ export default {
 
 <style>
 .tags {
-  position: relative;
+  /* position: relative; */
   height: 30px;
-  overflow: hidden;
+  overflow: auto;
   background: #fff;
-  padding-right: 120px;
   box-shadow: 0 5px 10px #ddd;
 }
 
