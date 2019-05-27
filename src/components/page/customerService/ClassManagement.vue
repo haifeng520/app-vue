@@ -401,20 +401,7 @@ export default {
         }
       ],
       options: [],
-      // 对话框表单数据
-      editDialogData: {}
     };
-  },
-  computed: {
-    isPromotion: {
-      get: function() {
-        return this.tableData.isPromotion === '0' ? false : true;
-      },
-      set: function() {
-        tableData.isPromotion === true ? 1 : 0;
-      }
-    }
-
   },
   methods: {
     /* 班级管理 */
