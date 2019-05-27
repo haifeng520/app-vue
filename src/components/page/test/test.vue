@@ -55,7 +55,8 @@ export default {
   },
   methods: {
     async handleClick() {
-      const res = await this.$axios.get('http://localhost:3000/list?_page=1&_limit=2');
+      const res = await this.$axios.get('http://localhost:3000/list');
+      
       const status = res.status;
       if(status === 200) {
         this.tableData = res.data;

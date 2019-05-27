@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Loading } from "element-ui";
-// import { Message } from 'element-ui';
+import { Message } from 'element-ui';
 
 const MyPlugin = {};
 MyPlugin.install = function(Vue) {
@@ -50,16 +50,19 @@ MyPlugin.install = function(Vue) {
       // Do something with response data
       // 响应结束后  关闭loding'
       lod.close();
-      /* const { status, msg } = response.data;
-    if (status === '200' || status === '201') {
+     /*  const { status, msg } = response.data;
+      if (status === '200' || status === '201') {
 
-    } else {
-      Message.warning(msg);
-    } */
+      } else {
+        Message.warning(msg);
+      } */
       return response;
     },
     function(error) {
       // Do something with response error
+      // 失败后 关闭加载提示
+      lod.close();
+      Message.warning('请求失败，请刷新重试！')
       return Promise.reject(error);
     }
   );

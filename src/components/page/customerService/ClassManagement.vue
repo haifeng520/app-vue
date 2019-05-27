@@ -141,8 +141,7 @@
       :stripe="true"
       :cell-style="cellStyle"
       :header-cell-style="rowClass"
-      style="width: 100%;"
-    >
+      style="width: 100%;">
       <el-table-column fixed type="index" width="50"> </el-table-column>
       <el-table-column fixed type="selection" width="50"> </el-table-column>
       <el-table-column fixed prop="showClassName" label="班名" width="220">
@@ -200,44 +199,83 @@
       </el-table-column>
       <el-table-column prop="isRecommend" label="是否推荐" width="80">
         <template slot-scope="scope">
-          <span v-if="scope.row.isRecommend === '0'">否</span>
-          <span v-else-if="scope.row.isRecommend === '1'">是</span>
+          <span v-if="!scope.row.isSet">
+            <span v-if="scope.row.isRecommend === '0'">否</span>
+            <span v-else-if="scope.row.isRecommend === '1'">是</span>
+          </span>
+          <span v-else>
+            <el-switch
+              v-model="scope.row.isRecommend"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-value="1"
+              inactive-value="0">
+            </el-switch>
+          </span>
         </template>
       </el-table-column>
       <el-table-column prop="isPromotion" label="是否促销" width="80">
         <template slot-scope="scope">
-          <span v-if="scope.row.isPromotion === '0'">否</span>
-          <span v-else-if="scope.row.isPromotion === '1'">是</span>
+          <span v-if="!scope.row.isSet">
+            <span v-if="scope.row.isPromotion === '0'">否</span>
+            <span v-else-if="scope.row.isPromotion === '1'">是</span>
+          </span>
+          <span v-else>
+            <el-switch
+              v-model="scope.row.isPromotion"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-value="1"
+              inactive-value="0">
+            </el-switch>
+          </span>
         </template>
       </el-table-column>
       <el-table-column prop="originalPrice" label="班级原价" width="80">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isSet">
+            <el-input placeholder="请输入内容" v-model="scope.row.originalPrice"></el-input>
+          </span>
+          <span v-else>{{scope.row.originalPrice}}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="presentPrice" label="班级现价" width="80">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isSet">
+            <el-input placeholder="请输入内容" v-model="scope.row.presentPrice"></el-input>
+          </span>
+          <span v-else>{{scope.row.presentPrice}}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="materialCharge" label="材料费" width="80">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isSet">
+            <el-input placeholder="请输入内容" v-model="scope.row.materialCharge"></el-input>
+          </span>
+          <span v-else>{{scope.row.materialCharge}}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="otherCharge" label="其他杂费" width="80">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isSet">
+            <el-input placeholder="请输入内容" v-model="scope.row.otherCharge"></el-input>
+          </span>
+          <span v-else>{{scope.row.otherCharge}}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="onSignUpUpper" label="报名上限" width="80">
       </el-table-column>
       <el-table-column prop="onSignUpNum" label="报名人数" width="80">
-        <template slot-scope="scope">
-          <el-input
-            v-model="scope.row.onSignUpNum"
-            placeholder="请输入内容"
-          ></el-input>
-        </template>
       </el-table-column>
       <el-table-column prop="sections" label="总课时（节/次）" width="130">
       </el-table-column>
       <el-table-column label="编辑信息" width="230">
         <template slot-scope="scope">
-          <el-button @click="handleEdit(scope.row)" size="mini"
-            >编辑信息</el-button
-          >
-          <el-button @click="handleEditChange(scope.row.id)" size="mini"
-            >进入编辑页面</el-button
-          >
+          <el-button @click="pwdChange(scope.row,scope.$index,true)">
+            {{scope.row.isSet?'保存':"编辑信息"}}
+          </el-button>
+          <el-button v-if="!scope.row.isSet" @click="handleEditChange(scope.row.id)" size="mini">进入编辑页面</el-button>
+          <el-button v-else @click="pwdChange(scope.row,scope.$index,false)" size="mini">撤销</el-button>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="500">
@@ -263,73 +301,6 @@
       :total="100"
     >
     </el-pagination>
-    <!-- 编辑信息对话框 -->
-    <el-dialog title="编辑信息" :visible.sync="editDialogVisible" width="30%">
-      <el-form ref="form" :model="editDialogData" label-width="80px">
-        <el-form-item label="上课时间">
-          <el-time-select
-            v-model="editDialogData.classBeginTime"
-            :picker-options="{
-              start: '04:00',
-              step: '00:30',
-              end: '18:30'
-            }"
-            placeholder="选择时间"
-          >
-          </el-time-select>
-        </el-form-item>
-        <el-form-item label="是否推荐">
-          <template>
-            <el-radio v-model="editDialogData.isRecommend" label="0"
-              >否</el-radio
-            >
-            <el-radio v-model="editDialogData.isRecommend" label="1"
-              >是</el-radio
-            >
-          </template>
-        </el-form-item>
-        <el-form-item label="是否促销">
-          <template>
-            <el-radio v-model="editDialogData.isPromotion" label="0"
-              >否</el-radio
-            >
-            <el-radio v-model="editDialogData.isPromotion" label="1"
-              >是</el-radio
-            >
-          </template>
-        </el-form-item>
-        <el-form-item label="班级原价">
-          <el-input
-            v-model="editDialogData.originalPrice"
-            placeholder="请输入金额"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="班级现价">
-          <el-input
-            v-model="editDialogData.presentPrice"
-            placeholder="请输入金额"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="材料费">
-          <el-input
-            v-model="editDialogData.materialCharge"
-            placeholder="请输入金额"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="其他杂费">
-          <el-input
-            v-model="editDialogData.otherCharge"
-            placeholder="请输入金额"
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editDialogVisible = false"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </el-card>
 </template>
 
@@ -369,23 +340,81 @@ export default {
           endDate: "2019-07-08",
           classStatus: 0,
           showTeacherName: "大饼",
-          isRecommend: "0",
-          isPromotion: "0",
+          isRecommend: "1",
+          isPromotion: '0',
           originalPrice: "100",
           presentPrice: "80",
           materialCharge: "0",
           otherCharge: "0",
           onSignUpUpper: "10",
           onSignUpNum: "8",
-          sections: "2"
+          sections: "2",
+          isSet: false
+        },
+        {
+          showClassName: "高一数学进阶班-香港中路校区阶班-香港中路校区",
+          campusName: "中山路校区中山路校区中山路校区中山路校区",
+          subName: "数学",
+          gradeName: "高一",
+          educationalType: 0,
+          classType: 0,
+          courseName: "暑假",
+          classBeginTime: "05：00",
+          beginDate: "2019-07-08",
+          endDate: "2019-07-08",
+          classStatus: 0,
+          showTeacherName: "大饼",
+          isRecommend: "0",
+          isPromotion: '1',
+          originalPrice: "100",
+          presentPrice: "80",
+          materialCharge: "0",
+          otherCharge: "0",
+          onSignUpUpper: "10",
+          onSignUpNum: "8",
+          sections: "2",
+          isSet: false
+        },
+        {
+          showClassName: "高一数学进阶班-香港中路校区阶班-香港中路校区",
+          campusName: "中山路校区中山路校区中山路校区中山路校区",
+          subName: "数学",
+          gradeName: "高一",
+          educationalType: 0,
+          classType: 0,
+          courseName: "暑假",
+          classBeginTime: "05：00",
+          beginDate: "2019-07-08",
+          endDate: "2019-07-08",
+          classStatus: 0,
+          showTeacherName: "大饼",
+          isRecommend: "0",
+          isPromotion: '0',
+          originalPrice: "100",
+          presentPrice: "80",
+          materialCharge: "0",
+          otherCharge: "0",
+          onSignUpUpper: "10",
+          onSignUpNum: "8",
+          sections: "2",
+          isSet: false
         }
       ],
       options: [],
-      // 编辑信息对话框
-      editDialogVisible: false,
       // 对话框表单数据
       editDialogData: {}
     };
+  },
+  computed: {
+    isPromotion: {
+      get: function() {
+        return this.tableData.isPromotion === '0' ? false : true;
+      },
+      set: function() {
+        tableData.isPromotion === true ? 1 : 0;
+      }
+    }
+
   },
   methods: {
     /* 班级管理 */
@@ -402,12 +431,6 @@ export default {
     },
     rowClass({ row, rowIndex }) {
       return "text-align: center";
-    },
-    // 编辑信息
-    handleEdit(obj) {
-      // 打开对话框
-      this.editDialogVisible = true;
-      this.editDialogData = obj;
     },
     // 点击编辑页面
     handleEditChange(id) {
@@ -452,6 +475,17 @@ export default {
     },
     handleChange(value) {
       console.log(value);
+    },
+    pwdChange(row, index, cg) {
+      if(!cg) {
+        console.log(!row.isSet);
+        return row.isSet = !row.isSet;
+      }
+      if (row.isSet) {
+        row.isSet = false;
+      } else {
+        row.isSet = true;
+      }
     }
   },
   created() {
