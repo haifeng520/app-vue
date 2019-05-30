@@ -167,6 +167,21 @@
       <el-table-column prop="courseName" label="课程" width="80">
       </el-table-column>
       <el-table-column prop="classBeginTime" label="上课时间" width="80">
+        <template slot-scope="scope">
+          <span v-if="!scope.row.isSet">
+            <span>{{scope.row.classBeginTime}}</span>
+          </span>
+          <span v-else>
+            <el-select v-model="scope.row.classBeginTime" placeholder="请选择">
+              <el-option
+                v-for="item in options1"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </span>
+        </template>
       </el-table-column>
       <el-table-column prop="beginDate" label="开课日期" width="100">
       </el-table-column>
@@ -328,6 +343,7 @@ export default {
       },
       tableData: [
         {
+          id: '1',
           showClassName: "高一数学进阶班-香港中路校区阶班-香港中路校区",
           campusName: "中山路校区中山路校区中山路校区中山路校区",
           subName: "数学",
@@ -352,6 +368,7 @@ export default {
           isSet: false
         },
         {
+          id: '2',
           showClassName: "高一数学进阶班-香港中路校区阶班-香港中路校区",
           campusName: "中山路校区中山路校区中山路校区中山路校区",
           subName: "数学",
@@ -376,6 +393,7 @@ export default {
           isSet: false
         },
         {
+          id: '3',
           showClassName: "高一数学进阶班-香港中路校区阶班-香港中路校区",
           campusName: "中山路校区中山路校区中山路校区中山路校区",
           subName: "数学",
@@ -401,11 +419,19 @@ export default {
         }
       ],
       options: [],
+      options1: [{
+        value: '5.00',
+        label: '5.00'
+      }, {
+        value: '5.30',
+        label: '5.30'
+      }, {
+        value: '6.00',
+        label: '6.00'
+      }]
     };
   },
   methods: {
-    /* 班级管理 */
-    // 重置表单  两个方法 注意
     handleFormData(formName) {
       // this.formData = {};
       this.$refs[formName].resetFields();
@@ -464,6 +490,13 @@ export default {
       console.log(value);
     },
     pwdChange(row, index, cg) {
+      //点击修改 判断是否已经保存所有操作
+      for (let i of this.tableData) {
+        if (i.isSet && i.id != row.id) {
+          this.$message.warning("请先保存当前编辑项");
+          return false;
+        }
+      }
       if(!cg) {
         console.log(!row.isSet);
         return row.isSet = !row.isSet;

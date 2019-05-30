@@ -2,7 +2,7 @@
   <div class="sidebar">
     <!-- 浅绿色主题 -->
     <!-- <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#fff"
-            text-color="#000" active-text-color="#20a0ff" unique-opened router> -->
+      text-color="#000" active-text-color="#20a0ff" unique-opened router> -->
     <!-- 深色主题 -->
     <el-menu
       class="sidebar-el-menu"
@@ -71,7 +71,8 @@ export default {
           subs: [
             { icon: "el-icon-document", title: "角色管理", index: "rows" },
             { icon: "el-icon-document", title: "用户管理", index: "user" },
-            { icon: "el-icon-document", title: "资源管理", index: "zs" }
+            { icon: "el-icon-document", title: "资源管理", index: "zs" },
+            { icon: "el-icon-document", title: "优惠券管理", index: "coupon" }
           ]
         },
         {
@@ -125,10 +126,10 @@ export default {
   height: 100%;
 }
 /* li.el-menu-item:hover {
-        background: #dff0ef !important;
-        color: #00D1B2 !important;
-    }
-    li.el-menu-item:hover i {
-        color: inherit;
-    } */
+  background: #dff0ef !important;
+  color: #00D1B2 !important;
+}
+li.el-menu-item:hover i {
+  color: inherit;
+} */
 </style>

@@ -39,7 +39,8 @@
             >1</span
           >
         </el-form-item>
-        <div class="login-btn">
+          <router-link to="/forgot">忘记密码？</router-link>
+        <div class="login-btn" style="margin-top: 10px;">
           <el-button type="primary" @click="submitForm('ruleForm')"
             >登录</el-button
           >
@@ -73,10 +74,8 @@ export default {
     };
   },
   created() {
-    this.bg.backgroundImage =
-      "url(" +
-      require("../../assets/img/bg0" + new Date().getDay() + ".jpg") +
-      ")";
+    // this.bg.backgroundImage = "url(" +require("../../assets/img/bg0" + new Date().getDay() + ".jpg") +")";
+    this.bg.backgroundImage = "url(" +require("../../assets/img/bg02.jpg") +")";
   },
   methods: {
     submitForm(formName) {

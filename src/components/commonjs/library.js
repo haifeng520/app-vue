@@ -34,5 +34,26 @@ export default {
   },
   removeLocal(key) {
     localStorage.removeItem(key);
-  }
+  },
+
+  // 数组分割字符串
+  arrayJoin(a) {
+    let str = '';
+		str = a.join(',');
+		if(str.length > 0 && str[str.length-1] == ",") {
+			str = str.substring(0,str.length-1);
+        } else {
+        	str = str;
+		}
+		return str;
+  },
+
+  // 是否为ie环境
+  isIE() {
+		if (!!window.ActiveXObject || "ActiveXObject" in window){
+		  return true;
+		}else{
+		  return false;
+		}
+	}    
 };

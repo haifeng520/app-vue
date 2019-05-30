@@ -11,6 +11,10 @@ const router = new Router({
       component: () => import("../components/common/Login.vue")
     },
     {
+      path: "/forgot",
+      component: () => import("../components/common/Forgot.vue")
+    },
+    {
       path: "/",
       component: resolve => require(["../components/common/Home.vue"], resolve),
       meta: { title: "自述文件" },
@@ -47,6 +51,17 @@ const router = new Router({
           component: () =>
             import("../components/page/test/vue-quill-editor.vue"),
           meta: { title: "富文本" }
+        },
+        {
+          path: "/coupon",
+          component: () =>
+            import("../components/page/coupon/List.vue"),
+          meta: { title: "优惠券管理" }
+        },
+        {
+          path: "/coupon/add",
+          component: () =>
+            import("../components/page/coupon/Add.vue")
         }
       ]
     }
