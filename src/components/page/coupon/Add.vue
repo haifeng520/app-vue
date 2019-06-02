@@ -5,7 +5,7 @@
       <div style="background: #fff;padding: 20px; margin-bottom: 30px">
         <el-row :gutter="20" style="border-bottom: 1px solid #ccc; padding-bottom: 15px;">
           <el-col :span="4"><div class="grid-content bg-purple"><h3><span class="shu"></span>基本信息</h3></div></el-col>
-          <el-col :span="2" :offset="18"><div class="grid-content bg-purple">返回</div></el-col>
+          <el-col :span="2" :offset="18"><div class="grid-content bg-purple" style="cursor: pointer;" @click="goBack">返回</div></el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="13" :offset="2">
@@ -40,6 +40,7 @@
                 <el-date-picker
                   v-model="form.start_timer"
                   type="datetimerange"
+                  @change="changeTimer"
                   range-separator="至"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期">
@@ -55,7 +56,7 @@
             <div class="grid-content bg-purple">
               <el-form-item label="满减规则" prop="leastFee"> 
                 <span>满&nbsp;&nbsp;</span><el-input style="display: inline-block; width: 100px;" v-model="form.leastFee"></el-input>
-                <span>&nbsp;&nbsp;减&nbsp;&nbsp;</span><el-input style="display: inline-block; width: 100px;" v-model="form.discountFee"></el-input><span>&nbsp;&nbsp;元</span>
+                <span>&nbsp;&nbsp;减&nbsp;&nbsp;</span><el-input style="display: inline-block; width: 100px;" v-model="form.discountFee" ref="discountFee"></el-input><span>&nbsp;&nbsp;元</span>
               </el-form-item>
             </div>
           </el-col>
@@ -86,6 +87,7 @@
             <div class="grid-content bg-purple">
               <el-form-item label="发放总量"> 
                 <el-input v-model="form.stock" style="display: inline-block; width: 100px;"></el-input><span>&nbsp;张</span>
+                <span style="color: red">（不输入代表不限数量）</span>
               </el-form-item>
             </div>
           </el-col>
@@ -95,6 +97,7 @@
             <div class="grid-content bg-purple">
               <el-form-item label="用户领取数量"> 
                 <el-input :disabled="true" v-model="form.userLimit" style="display: inline-block; width: 100px;"></el-input><span>&nbsp;张</span>
+                <span style="color: red">（暂不支持修改）</span>
               </el-form-item>
             </div>
           </el-col>
@@ -102,10 +105,10 @@
         <el-row :gutter="20">
           <el-col :span="13" :offset="2">
             <div class="grid-content bg-purple">
-              <el-form-item label="使用有效期" prop="radio"> 
+              <el-form-item label="使用有效期"> 
                 <template>
                   <el-row :gutter="20">
-                    <el-radio v-model="radio" label="1">固定有效期</el-radio>
+                    <el-radio v-model="radio" label="1" @change="radioChange">固定有效期</el-radio>
                     <el-date-picker
                       v-model="form.beginTime"
                       type="datetimerange"
@@ -115,7 +118,7 @@
                     </el-date-picker>
                   </el-row>
                   <el-row :gutter="20">
-                    <el-radio v-model="radio" label="2" style="padding-left: 12px;">领取后当天生效，有效天数</el-radio>
+                    <el-radio v-model="radio" label="2" @change="radioChange" style="padding-left: 12px;">领取后当天生效，有效天数</el-radio>
                     <el-input v-model="form.dateCount" style="display: inline-block; width: 100px;"></el-input><span>&nbsp;天</span>
                   </el-row>
                 </template>
@@ -155,7 +158,7 @@
                   <el-row :gutter="20">
                     <el-radio v-model="city" label="2" @change="cityChange" style="padding-left: 12px;">部分城市可用：选中的城市可使用此优惠券</el-radio>
                     <div style="margin: 15px 0;"></div>
-                    <el-checkbox-group :style="dsn" v-model="form.checkedCities" @change="handleCheckedCitiesChange">
+                    <el-checkbox-group :style="dsn" v-model="checkedCities" @change="handleCheckedCitiesChange">
                       <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
                     </el-checkbox-group>
                   </el-row>
@@ -235,11 +238,15 @@
             </div>
           </el-col>
         </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8" :offset="6">
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit('ruleForm')">立即创建</el-button>
+              <el-button>取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </div>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit('ruleForm')">立即创建</el-button>
-        <el-button>取消</el-button>
-      </el-form-item>
     </el-form>
   </el-card>
 </template>
@@ -249,27 +256,39 @@ const cityOptions = ['上海', '北京', '广州', '深圳'];
 export default {
   name: '',
   data() {
+    // 满减规则
+    let limitFull=(rule,value,callback)=>{
+      let discountFee = this.$refs.discountFee.value;
+      if(!value && !discountFee) {
+        callback();
+      };
+      if( value <= discountFee) {
+        callback(new Error('满减规则不合法'));
+      } else {
+        callback();
+      }
+    };
     return {
       form: {
         couponName: '',
         couponType: '',
-        start_timer: '',
-        leastFee: 0,
-        discountFee: 0,
+        start_timer: [],
+        leastFee: 100,
+        discountFee: 99,
         collectType: '',
         stock: '',
         userLimit: 1,
         userType: '',
-        beginTime: '',
+        beginTime: [],
         dateCount: '',
-        
-        checkedCities: [],
         cityIdStr: '',
         classRuleRemark: '',
         couponRemark: ''
       },
       city: '1',
+      checkedCities: [],
       radio: '1',
+      timer: [],
       // 优惠券类型
       couponTypeOptions: [{
         value: '1',
@@ -301,13 +320,10 @@ export default {
           { type: 'array', required: true, message: '请选择领取时间规则', trigger: 'change' }
         ],
         leastFee: [
-          { required: true, message: '输入满减金额', trigger: 'blur' },
+          { validator: limitFull, trigger: 'blur' },
         ],
         collectType: [
           { required: true, message: '请选择获取类型', trigger: 'change' }
-        ],
-        radio: [
-          { required: true, message: '至少选择一种规则', trigger: 'change' }
         ],
         userType: [
           { required: true, message: '请选择用户群体', trigger: 'change' }
@@ -324,7 +340,14 @@ export default {
     onSubmit(formName) {
        this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          // 验证一下有效期规则
+          if(this.radio === '1' && this.form.beginTime.length <= 0) {
+            this.$message.warning('请输入固定有效期规则！');return;
+          }
+          if(this.radio === '2' && this.form.dateCount === '') {
+            this.$message.warning('请输入有效天数！');return;
+          }
+          alert('tijiao')
         } else {
           console.log('error submit!!');
           return false;
@@ -335,6 +358,7 @@ export default {
       if(val == '1') {
         this.dsn = {display: 'none'};
         this.cityIdStr = '';
+        this.checkedCities =  [];
       } else {
         this.dsn = {display: 'block'}
       }
@@ -348,6 +372,22 @@ export default {
       this.previewDis = {display: '-webkit-flex'};
       if(this.library.isIE()) {
         this.previewDis = {display: '-ms-flexbox'};
+      }
+    },
+    // 点击领取时间规则
+    changeTimer(val) {
+      // console.log(val);
+    },
+    // 返回上一页
+    goBack() {
+      this.$router.back(-1);
+    },
+    // 有效期规则发生改变
+    radioChange(val) {
+      if(val === '1') {
+        this.form.dateCount = '';
+      } else {
+        this.form.beginTime = [];
       }
     }
   }

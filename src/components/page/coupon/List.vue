@@ -13,21 +13,52 @@
       <el-collapse-item title="检索功能" name="1">
         <el-form
           :model="formData"
-          label-width="100px"
+          label-width="140px"
           class="demo-ruleForm"
           ref="formData">
           <el-row :gutter="20">
             <el-col :span="8">
-              <el-form-item label="课程" prop="courseId">
-                <el-select v-model="formData.courseId" placeholder="请选择">
-                  <el-option label="区域一" value="1"></el-option>
-                  <el-option label="区域二" value="2"></el-option>
+              <el-form-item label="优惠券名称" prop="couponName">
+                <el-input v-model="formData.couponName" style="width: 230px"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="优惠券类型" prop="collectType">
+                <el-select v-model="formData.collectType" placeholder="请选择">
+                  <el-option label="满减" value="1"></el-option>
+                  <el-option label="无线自" value="2"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="班级名称" prop="showClassName">
-                <el-input v-model="formData.showClassName"></el-input>
+              <el-form-item label="审核状态" prop="auditFlag">
+                <el-select v-model="formData.auditFlag" placeholder="请选择">
+                  <el-option label="未通过" value="1"></el-option>
+                  <el-option label="已通过" value="2"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="领取开始时间" prop="releaseBeginTime">
+                <el-date-picker
+                  v-model="formData.releaseBeginTime"
+                  type="date"
+                  placeholder="选择日期">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="领取结束时间" prop="releaseEndTime">
+                <el-date-picker
+                  v-model="formData.releaseEndTime"
+                  type="date"
+                  placeholder="选择日期">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="优惠券备注" prop="couponRemark">
+                <el-input v-model="formData.couponRemark" style="width: 230px"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -50,28 +81,32 @@ export default {
     return {
       activeNames: ["1"],
       formData: {
-        courseId: '',
-        showClassName: '',
+        couponName: '',
+        collectType: '',
+        auditFlag: '',
+        releaseBeginTime: '',
+        releaseEndTime:'',
+        couponRemark: '',
         pageSize: 10,
-		    pageNumber: 1
+        pageNumber: 1
       }
     }
   },
   mounted() {
-    this.loadData();
+    // this.loadData();
   },
   methods: {
     // 获取列表数据
     async loadData() {
-      const res = await this.$axios.post('http://localhost:8020/coupon/selectByProperty', JSON.stringify(this.formData));
-      console.log(res);
+      // const res = await this.$axios.post('http://localhost:8020/coupon/selectByProperty', JSON.stringify(this.formData));
+      // console.log(res);
     },
     handleFormData(formName) {
       // this.formData = {};
       this.$refs[formName].resetFields();
     },
     handleSearch() {
-      this.loadData();
+      console.log(this.formData)
     },
     handleAddCoupon() {
       this.$router.push('/coupon/add');

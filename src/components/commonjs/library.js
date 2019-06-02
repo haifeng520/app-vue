@@ -47,7 +47,6 @@ export default {
 		}
 		return str;
   },
-
   // 是否为ie环境
   isIE() {
 		if (!!window.ActiveXObject || "ActiveXObject" in window){
