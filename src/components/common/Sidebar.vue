@@ -70,8 +70,8 @@ export default {
           index: "1",
           subs: [
             { icon: "el-icon-document", title: "角色管理", index: "rows" },
-            { icon: "el-icon-document", title: "用户管理", index: "user" },
-            { icon: "el-icon-document", title: "资源管理", index: "zs" },
+            { icon: "el-icon-document", title: "教师管理", index: "teacher" },
+            { icon: "el-icon-document", title: "文章管理", index: "article" },
             { icon: "el-icon-document", title: "优惠券管理", index: "coupon" }
           ]
         },

@@ -62,6 +62,28 @@ const router = new Router({
           path: "/coupon/add",
           component: () =>
             import("../components/page/coupon/Add.vue")
+        },
+        {
+          path: "/article",
+          component: () =>
+            import("../components/page/article/List.vue"),
+          meta: { title: "文章管理" }
+        },
+        {
+          path: "/article/add",
+          component: () =>
+            import("../components/page/article/Add.vue")
+        },
+        {
+          path: "/teacher",
+          component: () =>
+            import("../components/page/teacher/List.vue"),
+          meta: { title: "教师管理" }
+        },
+        {
+          path: "/teacher/add",
+          component: () =>
+            import("../components/page/teacher/Add.vue")
         }
       ]
     }

@@ -20,7 +20,6 @@ a {
     text-decoration: none
 }
 
-
 .content-box {
     position: absolute;
     left: 250px;
@@ -93,10 +92,14 @@ a {
     height: 100%;
     margin-top: 10px;
 }
-/* .el-switch__core .el-switch__button {
-    background-color: orange !important;
-} */
 .el-form-item__label {
-font-size: 18px !important;
-font-weight: 700;
+/* font-size: 16px !important; */
+}
+
+.ql-editor {
+height: 200px !important;
+}
+.ql-editing {
+    left: 100px !important;
+    top: 50px !important;
 }

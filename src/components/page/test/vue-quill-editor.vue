@@ -107,7 +107,7 @@ export default {
 </script>
 
 <style>
-.quill-editor {
+/* .quill-editor {
   height: 500px;
-}
+} */
 </style>

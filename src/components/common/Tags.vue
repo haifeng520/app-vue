@@ -18,22 +18,12 @@
         ></span>
       </li>
     </ul>
-    <!-- <div class="tags-close-box">
-            <el-dropdown @command="handleTags">
-                <el-button size="mini" type="primary">
-                    标签选项<i class="el-icon-arrow-down el-icon--right"></i>
-                </el-button>
-                <el-dropdown-menu size="small" slot="dropdown">
-                    <el-dropdown-item command="other">关闭其他</el-dropdown-item>
-                    <el-dropdown-item command="all">关闭所有</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
-        </div> -->
   </div>
 </template>
 
 <script>
 import bus from "../commonjs/bus.js";
+// import { log } from 'util';
 export default {
   data() {
     return {
@@ -47,27 +37,14 @@ export default {
     // 关闭单个标签
     closeTags(index) {
       const delItem = this.tagsList.splice(index, 1)[0];
-      const item = this.tagsList[index]
-        ? this.tagsList[index]
-        : this.tagsList[index - 1];
+      const item = this.tagsList[index] ? this.tagsList[index] : this.tagsList[index - 1];
       if (item) {
-        delItem.path === this.$route.fullPath && this.$router.push(item.path);
+        // delItem.path === this.$route.fullPath && this.$router.push(item.path);
+        this.$router.push(item.path);
       } else {
         this.$router.push("/welcome");
       }
     },
-    /* // 关闭全部标签
-            closeAll(){
-                this.tagsList = [];
-                this.$router.push('/welcome');
-            },
-            // 关闭其他标签
-            closeOther(){
-                const curItem = this.tagsList.filter(item => {
-                    return item.path === this.$route.fullPath;
-                })
-                this.tagsList = curItem;
-            }, */
     // 设置标签
     setTags(route) {
       const isExist = this.tagsList.some(item => {
