@@ -85,6 +85,11 @@ export default {
               title: "班级管理",
               index: "classmanagement"
             },
+            {
+              icon: "el-icon-document",
+              title: "校区管理",
+              index: "school"
+            },
             { icon: "el-icon-lx-notification", title: "测试", index: "test" },
             { icon: "el-icon-document", title: "富文本", index: "editor" }
           ]
@@ -103,6 +108,13 @@ export default {
     bus.$on("collapse", msg => {
       this.collapse = msg;
     });
+    this.loadData();
+  },
+  methods: {
+    loadData() {
+      // const res = await this.$axios.get();
+      this.$store.commit('SchoolCascade',['上海', '北京', '广州', '深圳']);
+    }
   }
 };
 </script>
@@ -120,7 +132,7 @@ export default {
   width: 0;
 }
 .sidebar-el-menu:not(.el-menu--collapse) {
-  width: 250px;
+  width: 200px;
 }
 .sidebar > ul {
   height: 100%;

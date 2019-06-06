@@ -5,7 +5,7 @@
       <div style="background: #fff;padding: 20px; margin-bottom: 30px">
         <el-row :gutter="20" style="border-bottom: 1px solid #ccc; padding-bottom: 15px;">
           <el-col :span="4"><div class="grid-content bg-purple"><h3><span class="shu"></span>基本信息</h3></div></el-col>
-          <el-col :span="2" :offset="18"><div class="grid-content bg-purple" style="cursor: pointer;" @click="goBack">返回</div></el-col>
+          <el-col :span="2" :offset="18"><div class="grid-content bg-purple" style="cursor: pointer;"><router-link to="/coupon">返回</router-link></div></el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="13" :offset="2">
@@ -377,10 +377,6 @@ export default {
     // 点击领取时间规则
     changeTimer(val) {
       // console.log(val);
-    },
-    // 返回上一页
-    goBack() {
-      this.$router.back(-1);
     },
     // 有效期规则发生改变
     radioChange(val) {

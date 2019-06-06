@@ -84,6 +84,17 @@ const router = new Router({
           path: "/teacher/add",
           component: () =>
             import("../components/page/teacher/Add.vue")
+        },
+        {
+          path: "/school",
+          component: () =>
+            import("../components/page/school/List.vue"),
+          meta: { title: "校区管理" }
+        },
+        {
+          path: "/school/add",
+          component: () =>
+            import("../components/page/school/Add.vue")
         }
       ]
     }

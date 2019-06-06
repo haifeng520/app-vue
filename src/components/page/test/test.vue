@@ -39,6 +39,15 @@
     {{ obj.a }}
     <el-input v-model="obj.b" placeholder="请输入内容"></el-input><br>
     {{ obj.b }}
+    <br>
+    <el-select v-model="form.collectType" placeholder="请选择">
+      <el-option
+        v-for="item in $store.getters.SchoolCascade"
+        :key="item"
+        :label="item"
+        :value="item">
+      </el-option>
+    </el-select>
   </el-card>
 </template>
 
@@ -50,6 +59,9 @@ export default {
       total: 10,
       obj: {
         a: '1'
+      },
+      form: {
+        collectType: ''
       }
     };
   },
@@ -73,6 +85,9 @@ export default {
       this.obj.b = '2';
       // this.$set(this.obj,'b','2');
     }
+  },
+  computed: {
+
   }
 };
 </script>

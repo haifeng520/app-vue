@@ -42,8 +42,8 @@ export default {
 		str = a.join(',');
 		if(str.length > 0 && str[str.length-1] == ",") {
 			str = str.substring(0,str.length-1);
-        } else {
-        	str = str;
+    } else {
+      str = str;
 		}
 		return str;
   },

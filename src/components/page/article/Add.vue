@@ -4,7 +4,7 @@
       <el-col :span="4"><div class="grid-content bg-purple"><h3>新增文章</h3></div></el-col>
       <el-col :span="2" :offset="18"><div class="grid-content bg-purple" style="cursor: pointer;"><router-link to="/article">返回</router-link></div></el-col>
     </el-row>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="280px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="280px" class="demo-ruleForm" size="mini">
       <el-form-item label="文章名称" prop="title">
         <el-input v-model="ruleForm.title"></el-input>
       </el-form-item>
@@ -228,5 +228,7 @@ export default {
 </script>
 
 <style lang='less' scoped>
-
+.el-input, .el-select {
+  width: 300px;
+}
 </style>

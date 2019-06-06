@@ -17,12 +17,13 @@ body {
 }
 
 a {
-    text-decoration: none
+    text-decoration: none;
+    color: #000;
 }
 
 .content-box {
     position: absolute;
-    left: 250px;
+    left: 200px;
     right: 0;
     top: 70px;
     bottom: 0;
@@ -102,4 +103,7 @@ height: 200px !important;
 .ql-editing {
     left: 100px !important;
     top: 50px !important;
+}
+.el-collapse-item__content {
+    padding-bottom: 0 !important;
 }
