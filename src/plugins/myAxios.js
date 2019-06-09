@@ -19,22 +19,23 @@ MyPlugin.install = function(Vue) {
     //dev 开发环境
     axios.defaults.baseURL = "";
   }
-  axios.defaults.timeout = 2500;
+  axios.defaults.timeout = 6000;
+  axios.defaults.headers.post['Content-Type'] = 'application/json';
   // 添加请求拦截器
   let lod = null;
   axios.interceptors.request.use(
     function(config) {
-      // Do something before request is sent
+      /* // Do something before request is sent
       // 发送请求之前 设置请求头 添加token， 登录时 不设置请求头
       if (config.url !== "login") {
         config.headers.Authorization = sessionStorage.getItem("token");
-      }
+      } */
       // 发送请求  添加lodaing
       lod = Loading.service({
         lock: true,
         text: "加载中,请稍后...",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
+        background: "rgba(0, 0, 0, 0.5)"
       });
       return config;
     },
@@ -50,19 +51,19 @@ MyPlugin.install = function(Vue) {
       // Do something with response data
       // 响应结束后  关闭loding'
       lod.close();
-     /*  const { status, msg } = response.data;
-      if (status === '200' || status === '201') {
-
+     const { result, msg } = response.data;
+      if (result) {
+        
       } else {
         Message.warning(msg);
-      } */
-      return response;
+      }
+      return response.data;
     },
     function(error) {
       // Do something with response error
       // 失败后 关闭加载提示
       lod.close();
-      Message.warning('请求失败，请刷新重试！')
+      Message.warning('请求失败，请刷新重试！');
       return Promise.reject(error);
     }
   );

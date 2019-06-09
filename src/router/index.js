@@ -103,7 +103,7 @@ const router = new Router({
 
 // 设置全局的前置路由守卫
 router.beforeEach((to, from, next) => {
-  if (to.path === "/login") {
+  if (to.path === "/login" || to.path === "/forgot") {
     next();
   } else {
     // 判断有没有 token

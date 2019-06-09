@@ -9,16 +9,16 @@
         label-width="0px"
         class="ms-content"
       >
-        <el-form-item prop="username">
-          <el-input v-model="ruleForm.username" placeholder="username">
+        <el-form-item prop="userName">
+          <el-input v-model="ruleForm.userName" placeholder="userName">
             <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
           </el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="userPassword">
           <el-input
             type="password"
             placeholder="password"
-            v-model="ruleForm.password"
+            v-model="ruleForm.userPassword"
           >
             <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
           </el-input>
@@ -28,16 +28,14 @@
             placeholder="indentify"
             v-model="ruleForm.indentify"
             @keyup.enter.native="submitForm('ruleForm')"
-            style="width: 70%;"
+            style="width: 65%"
           >
             <el-button slot="prepend" icon="el-icon-lx-warn"></el-button>
           </el-input>
           <!-- 放验证码 -->
-          <span
-            id="v_container"
-            style="display: inline-block; border: 1px solid #ccc; width: 28%; vertical-align: middle;"
-            >1</span
-          >
+          <div @click="refreshCode" style="display:inline-block;vertical-align: top;cursor: pointer;">
+            <s-indentfiy :identifyCode="identifyCode"></s-indentfiy>
+          </div>
         </el-form-item>
           <router-link to="/forgot">忘记密码？</router-link>
         <div class="login-btn" style="margin-top: 10px;">
@@ -53,25 +51,36 @@
 <script>
 // import { log } from "util";
 // import './indentify.js';
+import SIndentfiy from './indentify';
 export default {
+  components: { SIndentfiy },
   data() {
     return {
+      identifyCode: '',
+      identifyCodes: '123456789abcdefghjknmpqrstuvwxyz',
       bg: {},
       ruleForm: {
-        username: "admin",
-        password: "123123",
-        indentify: ""
+        userName: "root",
+        userPassword: "123456",
+        indentify: "",
+        captcha: '123'
       },
       rules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" }
         ],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" }
+        ],
         indentify: [
           { required: true, message: "请输入验证码", trigger: "blur" }
         ]
       }
     };
+  },
+  mounted() {
+    this.identifyCode = "";
+    this.makeCode(this.identifyCodes, 4);
   },
   created() {
     // this.bg.backgroundImage = "url(" +require("../../assets/img/bg0" + new Date().getDay() + ".jpg") +")";
@@ -79,8 +88,16 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
+          /* if(this.identifyCode !== this.ruleForm.indentify) {
+            this.$message.error('验证码错误！');
+            this.ruleForm.indentify = '';
+            this.refreshCode();
+            return;
+          } */
+         
+          // 设置登录令牌，配路由守卫
           this.library.setSessionStorage("token", "123");
           this.$message.success("登录成功！");
           this.$router.push("/welcome");
@@ -89,7 +106,21 @@ export default {
           return false;
         }
       });
-    }
+    },
+    randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    },
+    refreshCode() {
+      this.identifyCode = "";
+      this.makeCode(this.identifyCodes, 4);
+    },
+    makeCode(o, l) {
+      for (let i = 0; i < l; i++) {
+        this.identifyCode += this.identifyCodes[
+          this.randomNum(0, this.identifyCodes.length)
+        ];
+      }
+    },
   }
 };
 </script>

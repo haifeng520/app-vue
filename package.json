@@ -9,9 +9,10 @@
     "lintfix": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "core-js": "^2.6.5",
     "element-ui": "^2.8.2",
+    "identify": "^0.1.5",
     "vue": "^2.6.10",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.3",
